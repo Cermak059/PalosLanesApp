@@ -36,6 +36,7 @@
     <string name="ExamplePhone">708-123-1234</string>
     <string name="HeaderSign">CREATE ACCOUNT</string>
     <string name="LeagueMem">Are you a current league member?</string>
+    <string name="RecoverPass">Please enter your email address:</string>
     <string name="CheckYes">Yes</string>
     <string name="CheckNo">No</string>
     <string name="SubHead">CREATE CREDENTIALS</string>
@@ -51,4 +52,6 @@
     <string name="title_activity_coupons_page">CouponsPage</string>
     <string name="menu_gallery">Gallery</string>
     <string name="BirthExample">03/29/1993</string>
+    <string name="ForgotPassButton">Forgot Password?</string>
+    <string name="BtnRequest">Send Email</string>
 </resources>

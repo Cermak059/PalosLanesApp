@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:background="#FFFFFF"
-        android:ems="10"
         android:elevation="30dp"
+        android:ems="10"
         android:hint="@string/Username"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,8 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:background="#FFFFFF"
-        android:ems="10"
         android:elevation="30dp"
+        android:ems="10"
         android:hint="@string/Password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,5 +95,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnForgot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:onClick="btnForgot"
+        android:text="@string/ForgotPassButton"
+        android:textColor="#0000FF"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

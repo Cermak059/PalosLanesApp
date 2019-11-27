@@ -180,10 +180,6 @@ public class LoginPage extends AppCompatActivity {
                     });
 
                 }
-
-                //Display toast and call method to switch activity
-                //Toast.makeText(LoginPage.this, "Authentication Successful", Toast.LENGTH_LONG).show();
-                //New();
             }
         });
     }
@@ -195,6 +191,10 @@ public class LoginPage extends AppCompatActivity {
     public void btnRegister (View view) {
         Intent signup = new Intent(this,SignUpPage.class);
         startActivity(signup);
+    }
+    public void btnForgot (View view) {
+        Intent resetPass = new Intent(this,ResetPass.class);
+        startActivity(resetPass);
     }
 
 }
