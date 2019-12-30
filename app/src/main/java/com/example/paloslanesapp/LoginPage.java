@@ -3,6 +3,9 @@ package com.example.paloslanesapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -33,8 +36,10 @@ public class LoginPage extends AppCompatActivity {
     EditText mPassword;
     Button Login;
     CheckBox mCheckbox;
+    private ProgressDialog loginDialogue;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +51,23 @@ public class LoginPage extends AppCompatActivity {
         mPassword =  findViewById(R.id.editPassword);
         mCheckbox =  findViewById(R.id.checkBoxRemember);
         Login =  findViewById(R.id.btnLogin);
+        builder = new AlertDialog.Builder(LoginPage.this);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
 
         checkSharedPreferences();
+
+        if (mPreferences.getString(getString(R.string.AuthToken), "") !=null) {
+            loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
+            try {
+                verifyToken(mPreferences.getString(getString(R.string.AuthToken), ""));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            Log.i("No auth token found","");
+        }
 
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +87,7 @@ public class LoginPage extends AppCompatActivity {
                     mPassword.requestFocus();
                     mPassword.setError("Field cannot be empty");
                 } else {
+                    loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
                     //Save data when remember me checkbox is checked
                     if (mCheckbox.isChecked()) {
                         mEditor.putString(getString(R.string.CheckboxSave), "True");
@@ -160,12 +179,13 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String mMessage = response.body().string();
-                if (response.isSuccessful()) {
-                    Log.i("", mMessage);
+                if (response.code() == 200) {
+                    mEditor.putString(getString(R.string.AuthToken), mMessage);
+                    mEditor.commit();
                     LoginPage.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(LoginPage.this, mMessage, Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginPage.this, "Login successful", Toast.LENGTH_LONG).show();
                             //Display toast and call method to switch activity
                             New();
                         }
@@ -184,9 +204,72 @@ public class LoginPage extends AppCompatActivity {
         });
     }
 
+    public void verifyToken(String authToken) throws IOException {
+        MediaType MEDIA_TYPE = MediaType.parse("application/json");
+        String url = "http://3.15.199.174:5000/Authenticate";
+
+        OkHttpClient client = new OkHttpClient();
+
+        JSONObject postdata = new JSONObject();
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE, postdata.toString());
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("X-Auth-Token", authToken)
+                //.post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String mMessage = response.body().string();
+                if (response.code() == 200) {
+                    LoginPage.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginPage.this, "Login successful", Toast.LENGTH_LONG).show();
+                            //Display toast and call method to switch activity
+                            New();
+                        }
+                    });
+                } else if (response.code()==401) {
+                    LoginPage.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (loginDialogue != null){
+                                loginDialogue.dismiss();
+                            }
+                            showAlert();
+                        }
+                    });
+
+                } else {
+                    LoginPage.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginPage.this, mMessage, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
     public void New() {
-        Intent homepage = new Intent(this,MainActivity.class);
-        startActivity(homepage);
+        if (loginDialogue != null){
+            loginDialogue.dismiss();
+        }
+            Intent homepage = new Intent(this, MainActivity.class);
+            startActivity(homepage);
     }
     public void btnRegister (View view) {
         Intent signup = new Intent(this,SignUpPage.class);
@@ -197,4 +280,14 @@ public class LoginPage extends AppCompatActivity {
         startActivity(resetPass);
     }
 
+    public void showAlert() {
+        builder.setTitle("Logged Out")
+                .setMessage("Session has expired")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .show();
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.paloslanesapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     private EditText mPassword;
     private CheckBox mCheckbox;
     private Button btnlogin;
+    private ProgressDialog loginDialogue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +66,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.menu_Logout) {
-            Intent logout = new Intent(this,LoginPage.class);
-            startActivity(logout);
+            finish();
+        }
+        else if (id == R.id.my_account) {
+            Intent accountPage = new Intent(this, activity_my_account.class);
+            startActivity(accountPage);
         }
         return super.onOptionsItemSelected(item);
     }
