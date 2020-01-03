@@ -29,10 +29,25 @@ import okhttp3.Response;
 public class activity_my_account extends AppCompatActivity {
 
     private TextView textPoints;
+    private TextView textFullName;
+    private TextView textBirthday;
+    private TextView textEmail;
+    private TextView textUsername;
+    private TextView textPhoneNumber;
+    private TextView textLeagueMember;
     private ProgressDialog accountDialogue;
     private SharedPreferences mPreferences;
     private String authToken;
     private String userPoints;
+    private String userFirstName;
+    private String userLastName;
+    private String userName;
+    private String userEmail;
+    private String userBirthday;
+    private String userPhoneNumber;
+    private String userUsername;
+    private String userLeague;
+    private String leagueMember;
     AlertDialog.Builder builder;
 
     @Override
@@ -41,8 +56,13 @@ public class activity_my_account extends AppCompatActivity {
         setContentView(R.layout.activity_my_account);
 
         accountDialogue = ProgressDialog.show( activity_my_account.this, "Loading Data", "Please wait...");
-
+        textFullName = findViewById(R.id.textFullName);
         textPoints = findViewById(R.id.textPoints);
+        textBirthday = findViewById(R.id.textBirthday);
+        textEmail = findViewById(R.id.textEmail);
+        textUsername = findViewById(R.id.textUsername);
+        textPhoneNumber = findViewById(R.id.textPhoneNum);
+        textLeagueMember = findViewById(R.id.textLeagueMember);
         builder = new AlertDialog.Builder(activity_my_account.this);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -79,16 +99,44 @@ public class activity_my_account extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 final String mMessage = response.body().string();
                 if (response.code() == 200) {
+                    try {
+                        JSONObject resObj = new JSONObject(mMessage);
+                        userPoints = resObj.getString("Points");
+                        userFirstName = resObj.getString("Fname");
+                        userLastName = resObj.getString("Lname");
+                        userBirthday = resObj.getString("Birthdate");
+                        userEmail = resObj.getString("Email");
+                        userUsername = resObj.getString("Username");
+                        userPhoneNumber = resObj.getString("Phone");
+                        userLeague = resObj.getString("League");
+                        leagueMember = "League Member: "+ userLeague;
+                        userName = userFirstName + " " + userLastName;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     activity_my_account.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            textPoints.setText(mMessage);
+                            textPoints.setText(userPoints);
+                            textFullName.setText(userName);
+                            textBirthday.setText(userBirthday);
+                            textEmail.setText(userEmail);
+                            textPhoneNumber.setText(userPhoneNumber);
+                            textUsername.setText(userUsername);
+                            textLeagueMember.setText(leagueMember);
                             if (accountDialogue != null) {
                                 accountDialogue.dismiss();
                             }
                         }
                     });
                 }  else if (response.code() == 401){
+                    activity_my_account.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showAlert();
+                        }
+                    });
+                } else {
                     activity_my_account.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -102,6 +150,7 @@ public class activity_my_account extends AppCompatActivity {
     }
 
     public void showAlert() {
+        accountDialogue.dismiss();
         builder.setTitle("Logged Out")
                 .setMessage("Session has expired")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -111,4 +160,9 @@ public class activity_my_account extends AppCompatActivity {
                     }
                 }).show();
     }
+
+    public void onBackPressed() {
+        finish();
+    }
+
 }

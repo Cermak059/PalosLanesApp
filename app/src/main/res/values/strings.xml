@@ -25,6 +25,7 @@
     <string name="UsernameSave">com.example.paloslanesapp.UserSave</string>
     <string name="PasswordSave">com.example.paloslanesapp.PasswordSave</string>
     <string name="AuthToken">com.example.paloslanesapp.AuthToken</string>
+    <string name="AccessLevel">com.exmaple.paloslanesapp.AccessLevel</string>
 
 
     <string name="Birth">Birthdate:</string>
@@ -56,4 +57,9 @@
     <string name="BirthExample">03/29/1993</string>
     <string name="ForgotPassButton">Forgot Password?</string>
     <string name="BtnRequest">Send Email</string>
+    <string name="BtnAddPoints">+/- Points</string>
+    <string name="BtnCoupon">Scan Coupon</string>
+    <string name="AdminTitle">Manage Points</string>
+    <string name="AdminTitle2">Scan Coupons</string>
+    <string name="AdminContent">Add points:\nper game paid = +100pts\n\nSubtract points:\nper game redeemed = -500pts\n\n**Guests will not receive points for games redeemed with points or coupons**</string>
 </resources>

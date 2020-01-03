@@ -36,6 +36,8 @@ public class LoginPage extends AppCompatActivity {
     EditText mPassword;
     Button Login;
     CheckBox mCheckbox;
+    private String authToken;
+    private String AccessLevel;
     private ProgressDialog loginDialogue;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
@@ -58,7 +60,7 @@ public class LoginPage extends AppCompatActivity {
         checkSharedPreferences();
 
         if (mPreferences.getString(getString(R.string.AuthToken), "") !=null) {
-            loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
+            //loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
             try {
                 verifyToken(mPreferences.getString(getString(R.string.AuthToken), ""));
             } catch (IOException e) {
@@ -87,7 +89,7 @@ public class LoginPage extends AppCompatActivity {
                     mPassword.requestFocus();
                     mPassword.setError("Field cannot be empty");
                 } else {
-                    loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
+                    //loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
                     //Save data when remember me checkbox is checked
                     if (mCheckbox.isChecked()) {
                         mEditor.putString(getString(R.string.CheckboxSave), "True");
@@ -180,25 +182,69 @@ public class LoginPage extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 final String mMessage = response.body().string();
                 if (response.code() == 200) {
-                    mEditor.putString(getString(R.string.AuthToken), mMessage);
+                    try {
+                        JSONObject authObj = new JSONObject(mMessage);
+                        authToken = authObj.getString("AuthToken");
+                        AccessLevel = authObj.getString("AccessLevel");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mEditor.putString(getString(R.string.AuthToken), authToken);
+                    mEditor.putString(getString(R.string.AccessLevel), AccessLevel);
                     mEditor.commit();
                     LoginPage.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(LoginPage.this, "Login successful", Toast.LENGTH_LONG).show();
-                            //Display toast and call method to switch activity
-                            New();
+                            if (mPreferences.getString(getString(R.string.AccessLevel), "").equals("User")) {
+                                Toast.makeText(LoginPage.this, "Login successful", Toast.LENGTH_LONG).show();
+                                //Display toast and call method to switch activity
+                                userActivity();
+                            }
+                            else if (mPreferences.getString(getString(R.string.AccessLevel),"").equals("Admin")){
+                                Toast.makeText(LoginPage.this, "Welcome Admin", Toast.LENGTH_LONG).show();
+                                adminActivity();
+                            }
+                            else {
+                                if (loginDialogue != null){
+                                    loginDialogue.dismiss();
+                                }
+                                builder.setTitle("Error")
+                                        .setMessage("Could not login at this time please try again")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            }
+                                        }).show();
+                            }
                         }
                     });
-                } else {
-                    Log.i("", mMessage);
+                } else if (response.code() == 400){
                     LoginPage.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(LoginPage.this, mMessage, Toast.LENGTH_LONG).show();
+                            if (loginDialogue != null){
+                                loginDialogue.dismiss();
+                            }
+                            builder.setTitle("Login Failed")
+                                    .setMessage("Invalid username or password")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    }).show();
                         }
                     });
 
+                } else {
+                    builder.setMessage("Unable to login at this time")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            }).show();
                 }
             }
         });
@@ -217,7 +263,6 @@ public class LoginPage extends AppCompatActivity {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("X-Auth-Token", authToken)
-                //.post(body)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -235,9 +280,23 @@ public class LoginPage extends AppCompatActivity {
                     LoginPage.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(LoginPage.this, "Login successful", Toast.LENGTH_LONG).show();
-                            //Display toast and call method to switch activity
-                            New();
+                            if (mPreferences.getString(getString(R.string.AccessLevel), "").equals("User")) {
+                                Toast.makeText(LoginPage.this, "Login successful", Toast.LENGTH_LONG).show();
+                                userActivity();
+                            } else if (mPreferences.getString(getString(R.string.AccessLevel), "").equals("Admin")) {
+                                Toast.makeText(LoginPage.this, "Welcome Admin", Toast.LENGTH_LONG).show();
+                                adminActivity();
+                            }
+                            else {
+                                builder.setTitle("Unexpected Error Occurred")
+                                        .setMessage("Please try again")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            }
+                                        }).show();
+                            }
                         }
                     });
                 } else if (response.code()==401) {
@@ -264,7 +323,14 @@ public class LoginPage extends AppCompatActivity {
 
     }
 
-    public void New() {
+    public void adminActivity() {
+        if (loginDialogue != null){
+            loginDialogue.dismiss();
+        }
+        Intent adminPage = new Intent(this, adminActivity.class);
+        startActivity(adminPage);
+    }
+    public void userActivity() {
         if (loginDialogue != null){
             loginDialogue.dismiss();
         }
