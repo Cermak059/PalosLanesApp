@@ -62,4 +62,10 @@
     <string name="AdminTitle">Manage Points</string>
     <string name="AdminTitle2">Scan Coupons</string>
     <string name="AdminContent">Add points:\nper game paid = +100pts\n\nSubtract points:\nper game redeemed = -500pts\n\n**Guests will not receive points for games redeemed with points or coupons**</string>
+    <string name="AdminContent2">Scan coupons\n\nEach coupon will be worth one game per customer\n\n**Coupons will refresh for all users every Monday morning**</string>
+    <string name="SwitchLoyalty">  ADD</string>
+    <string name="SwitchLoyalty2">REDEEM</string>
+    <string name="BtnGenerate">Generate Code</string>
+    <string name="Dialogue">Please select the number of points to add!</string>
+    <string name="Dialogue2">Please select the number of games to redeem!</string>
 </resources>

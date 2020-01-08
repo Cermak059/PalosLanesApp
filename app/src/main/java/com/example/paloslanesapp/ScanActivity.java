@@ -2,6 +2,7 @@ package com.example.paloslanesapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -59,6 +60,8 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
         setResult(RESULT_OK, data);
         super.finish();
     }
+
+
 }
 
 

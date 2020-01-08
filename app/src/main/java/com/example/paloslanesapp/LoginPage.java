@@ -71,6 +71,7 @@ public class LoginPage extends AppCompatActivity {
             Log.i("No auth token found","");
         }
 
+
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
