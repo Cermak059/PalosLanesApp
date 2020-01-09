@@ -5,12 +5,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class adminActivity extends AppCompatActivity {
 
@@ -18,6 +34,9 @@ public class adminActivity extends AppCompatActivity {
     AlertDialog.Builder builder;
     private int pointValue;
     private String pointString;
+    private String authToken;
+    private String accountID;
+    private SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +45,7 @@ public class adminActivity extends AppCompatActivity {
 
         Scan = findViewById(R.id.buttonScan);
         builder = new AlertDialog.Builder(adminActivity.this);
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         Scan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,9 +63,9 @@ public class adminActivity extends AppCompatActivity {
         // check if the request code is same as what is passed  here it is 2
         if(requestCode==1001)
         {
-            String addPoints=data.getStringExtra("Add Points");
+            accountID = data.getStringExtra("Add Points");
 
-            builder.setMessage("Would you like to add or redeem point?")
+            builder.setMessage("Would you like to add or redeem points?")
                     .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -60,6 +80,15 @@ public class adminActivity extends AppCompatActivity {
                         }
                     }).show();
 
+        } else {
+            builder.setTitle("QR Code Error")
+                    .setMessage("Please try again")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).show();
         }
     }
 
@@ -83,8 +112,11 @@ public class adminActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 pointValue = numberPicker.getValue()*100;
-                pointString = "You added "+pointValue+" points";
-                Toast.makeText(adminActivity.this, pointString, Toast.LENGTH_LONG).show();
+                try {
+                    managePoints();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         d.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -100,7 +132,7 @@ public class adminActivity extends AppCompatActivity {
 
         final AlertDialog.Builder d = new AlertDialog.Builder(adminActivity.this);
         LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.redeem_picker_dialogue, null);
+        final View dialogView = inflater.inflate(R.layout.redeem_picker_dialogue, null);
         d.setView(dialogView);
         final NumberPicker numberPicker = dialogView.findViewById(R.id.dialog_number_picker);
         numberPicker.setMaxValue(5);
@@ -117,8 +149,11 @@ public class adminActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 pointValue = numberPicker.getValue()*-500;
-                pointString = "You redeemed "+pointValue+" points";
-                Toast.makeText(adminActivity.this, pointString, Toast.LENGTH_LONG).show();
+                try {
+                    managePoints();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         d.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -128,6 +163,95 @@ public class adminActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = d.create();
         alertDialog.show();
+    }
+
+    public void managePoints() throws IOException {
+
+        authToken = mPreferences.getString(getString(R.string.AuthToken), "");
+
+        MediaType MEDIA_TYPE = MediaType.parse("application/json");
+        String url = "http://3.15.199.174:5000/Points";
+
+        OkHttpClient client = new OkHttpClient();
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("Email", accountID );
+            postdata.put("Points", pointValue);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE, postdata.toString());
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("X-Auth-Token", authToken)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String mMessage = response.body().string();
+                if (response.code() == 200) {
+                    Log.i("", mMessage);
+                    adminActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(adminActivity.this, "SUCCESS!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else if (response.code()==400){
+                    Log.i("", mMessage);
+                    adminActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.setTitle("Error")
+                                    .setMessage(mMessage)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    }).show();
+                        }
+                    });
+
+                } else if (response.code()==401) {
+                    Log.i("", mMessage);
+                    adminActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.setTitle("Error")
+                                    .setMessage("Unauthorized to perform this action")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    }).show();
+                        }
+                    });
+                } else {
+                    builder.setTitle("Error")
+                            .setMessage("Unexpected error has occurred please try again!")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            }).show();
+                }
+            }
+        });
     }
 
 }
