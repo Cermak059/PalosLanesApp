@@ -2,14 +2,9 @@
     <string name="app_name">PalosLanesApp</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Welcome to Palos Lanes</string>
-    <string name="nav_header_subtitle">11025 Southwest Highway</string>
-    <string name="nav_header_subtitle2">Palos Hills 60465</string>
-    <string name="nav_header_subtitle3">708-974-3200</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="my_account">My Account</string>
-
     <string name="menu_home">Home</string>
     <string name="HeaderIMG">Palos Lanes Header</string>
     <string name="Username">Enter Username</string>
@@ -25,8 +20,14 @@
     <string name="UsernameSave">com.example.paloslanesapp.UserSave</string>
     <string name="PasswordSave">com.example.paloslanesapp.PasswordSave</string>
     <string name="AuthToken">com.example.paloslanesapp.AuthToken</string>
-    <string name="AccessLevel">com.exmaple.paloslanesapp.AccessLevel</string>
-
+    <string name="AccessLevel">com.example.paloslanesapp.AccessLevel</string>
+    <string name="PointsSave">com.example.paloslanesapp.PointsSave</string>
+    <string name="FirstSave">com.example.paloslanesapp.FirstSave</string>
+    <string name="LastSave">com.example.paloslanesapp.LastSave</string>
+    <string name="BirthdaySave">com.example.paloslanesapp.BirthdaySave</string>
+    <string name="EmailSave">com.example.paloslanesapp.EmailSave</string>
+    <string name="LeagueSave">com.example.paloslanesapp.LeagueSave</string>
+    <string name="PhoneSave">com.example.paloslanesapp.PhoneSave</string>
 
     <string name="Birth">Birthdate:</string>
     <string name="Email">Email:</string>
@@ -36,7 +37,7 @@
     <string name="FirstN">First Name:</string>
     <string name="LastN">Last Name:</string>
     <string name="PhoneN">Phone:</string>
-    <string name="ExamplePhone">708-123-1234</string>
+    <string name="ExamplePhone">708endash123endash1234</string>
     <string name="HeaderSign">CREATE ACCOUNT</string>
     <string name="LeagueMem">Are you a current league member?</string>
     <string name="RecoverPass">Please enter your email address:</string>
@@ -68,4 +69,12 @@
     <string name="BtnGenerate">Generate Code</string>
     <string name="Dialogue">Please select the number of points to add!</string>
     <string name="Dialogue2">Please select the number of games to redeem!</string>
+    <string name="WelcomeMessage">Welcome,</string>
+    <string name="HomeContent">Bowl, Earn and Redeem!</string>
+    <string name="ButtonContent">Home image button</string>
+    <string name="SlideshowContent">Specials slideshow</string>
+    <string name="QRcodeContent">QR Code</string>
+    <string name="ButtonRefresh">REFRESH</string>
+    <string name="PinContent">Account page logo pin</string>
+
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:duration="4000"
+        android:drawable="@drawable/mondaymadness"/>
+
+    <item
+        android:duration="4000"
+        android:drawable="@drawable/happyhour"/>
+
+    <item
+        android:duration="4000"
+        android:drawable="@drawable/wildwednesday"/>
+
+    <item
+        android:duration="4000"
+        android:drawable="@drawable/beattheclockweb"/>
+
+    <item
+        android:duration="4000"
+        android:drawable="@drawable/birthdaypic"/>
+
+
+</animation-list>

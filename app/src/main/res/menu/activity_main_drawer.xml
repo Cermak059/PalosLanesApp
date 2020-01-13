@@ -14,7 +14,7 @@
             android:title="@string/Nav_Loyalty"/>
         <item
             android:id="@+id/nav_coupons"
-            android:icon="@drawable/coupon"
+            android:icon="@drawable/discount"
             android:title="@string/menu_coupons" />
         <item
             android:id="@+id/nav_LeagueStandings"

@@ -38,6 +38,13 @@ public class LoginPage extends AppCompatActivity {
     CheckBox mCheckbox;
     private String authToken;
     private String AccessLevel;
+    private String userPoints;
+    private String userFirstName;
+    private String userLastName;
+    private String userBirthday;
+    private String userEmail;
+    private String userPhoneNumber;
+    private String userLeague;
     private ProgressDialog loginDialogue;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
@@ -197,9 +204,11 @@ public class LoginPage extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (mPreferences.getString(getString(R.string.AccessLevel), "").equals("User")) {
-                                Toast.makeText(LoginPage.this, "Login successful", Toast.LENGTH_LONG).show();
-                                //Display toast and call method to switch activity
-                                userActivity();
+                                try {
+                                    getUserData(authToken);
+                                } catch (IOException e){
+                                    e.printStackTrace();
+                                }
                             }
                             else if (mPreferences.getString(getString(R.string.AccessLevel),"").equals("Admin")){
                                 Toast.makeText(LoginPage.this, "Welcome Admin", Toast.LENGTH_LONG).show();
@@ -251,15 +260,11 @@ public class LoginPage extends AppCompatActivity {
         });
     }
 
-    public void verifyToken(String authToken) throws IOException {
+    public void verifyToken(final String authToken) throws IOException {
         MediaType MEDIA_TYPE = MediaType.parse("application/json");
         String url = "http://3.15.199.174:5000/Authenticate";
 
         OkHttpClient client = new OkHttpClient();
-
-        JSONObject postdata = new JSONObject();
-
-        RequestBody body = RequestBody.create(MEDIA_TYPE, postdata.toString());
 
         Request request = new Request.Builder()
                 .url(url)
@@ -282,15 +287,18 @@ public class LoginPage extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (mPreferences.getString(getString(R.string.AccessLevel), "").equals("User")) {
-                                Toast.makeText(LoginPage.this, "Login successful", Toast.LENGTH_LONG).show();
-                                userActivity();
+                                try {
+                                    getUserData(authToken);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             } else if (mPreferences.getString(getString(R.string.AccessLevel), "").equals("Admin")) {
                                 Toast.makeText(LoginPage.this, "Welcome Admin", Toast.LENGTH_LONG).show();
                                 adminActivity();
                             }
                             else {
                                 builder.setTitle("Unexpected Error Occurred")
-                                        .setMessage("Please try again")
+                                        .setMessage("Please login again")
                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -315,7 +323,91 @@ public class LoginPage extends AppCompatActivity {
                     LoginPage.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(LoginPage.this, mMessage, Toast.LENGTH_LONG).show();
+                            builder.setMessage("Unable to login at this time please try again later")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    }).show();
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
+    public void getUserData(String authToken) throws IOException {
+        MediaType MEDIA_TYPE = MediaType.parse("application/json");
+        String url = "http://3.15.199.174:5000/Users";
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("X-Auth-Token", authToken)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String mMessage = response.body().string();
+                if (response.code() == 200) {
+                    try {
+                        JSONObject resObj = new JSONObject(mMessage);
+                        userPoints = resObj.getString("Points");
+                        userFirstName = resObj.getString("Fname");
+                        userLastName = resObj.getString("Lname");
+                        userBirthday = resObj.getString("Birthdate");
+                        userEmail = resObj.getString("Email");
+                        userPhoneNumber = resObj.getString("Phone");
+                        userLeague = resObj.getString("League");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mEditor.putString(getString(R.string.FirstSave), userFirstName);
+                    mEditor.putString(getString(R.string.LastSave), userLastName);
+                    mEditor.putString(getString(R.string.PointsSave), userPoints);
+                    mEditor.putString(getString(R.string.BirthdaySave), userBirthday);
+                    mEditor.putString(getString(R.string.EmailSave), userEmail);
+                    mEditor.putString(getString(R.string.PhoneSave), userPhoneNumber);
+                    mEditor.putString(getString(R.string.LeagueSave), userLeague);
+                    mEditor.commit();
+                    LoginPage.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginPage.this, "Login successful", Toast.LENGTH_LONG).show();
+                            //Display toast and call method to switch activity
+                            userActivity();
+                        }
+                    });
+                }  else if (response.code() == 401){
+                    LoginPage.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showAlert();
+                        }
+                    });
+                } else {
+                    LoginPage.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.setTitle("Unexpected Error Occurred")
+                                    .setMessage("Failed to load data")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            userActivity();
+                                        }
+                                    }).show();
                         }
                     });
                 }

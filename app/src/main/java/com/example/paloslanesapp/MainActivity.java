@@ -1,8 +1,6 @@
 package com.example.paloslanesapp;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -20,20 +18,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private SharedPreferences mPreferences;
-    private SharedPreferences.Editor mEditor;
-    private EditText mUsername;
-    private EditText mPassword;
-    private CheckBox mCheckbox;
-    private Button btnlogin;
-    private ProgressDialog loginDialogue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +35,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        showFragmentHome();
 
     }
 
@@ -69,8 +57,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
         else if (id == R.id.my_account) {
-            Intent accountPage = new Intent(this, activity_my_account.class);
-            startActivity(accountPage);
+            showFragmentAccount();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -94,8 +81,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent home = new Intent(this,MainActivity.class);
-            startActivity(home);
+            Home fragment = new Home();
+            transaction.replace(R.id.fragmentHolder, fragment);
         } else if (id == R.id.nav_coupons) {
             Coupons fragment = new Coupons();
             transaction.replace(R.id.fragmentHolder, fragment);
@@ -118,6 +105,23 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void showFragmentHome() {
+        Home fragment = new Home();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentHolder, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    public void showFragmentAccount() {
+        MyAccount fragment = new MyAccount();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentHolder, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
     }
 
 }

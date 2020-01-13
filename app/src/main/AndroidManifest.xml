@@ -17,7 +17,6 @@
         <activity android:name=".ScanActivity" />
         <activity android:name=".adminActivity"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".activity_my_account" />
         <activity android:name=".ResetPass" />
         <activity android:name=".SignUpPage" />
         <activity android:name=".LoginPage">

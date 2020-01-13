@@ -3,6 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="Palos">#7a2a37</color>
-    <color name="PalosDark">#4d0127</color>
+    <color name="Palos">#7A2A37</color>
+    <color name="PalosDark">#4D0127</color>
+    <color name="PalosGold">#efb91b</color>
+    <color name="PalosPurple">#812566</color>
 </resources>

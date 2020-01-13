@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -38,8 +39,10 @@ public class Loyalty extends Fragment {
     private TextView rules;
     private String content;
     private String content2;
+    private String showPoints;
     private RadioButton mAdd;
     private RadioButton mRedeem;
+    private Button Refresh;
     private String userPoints;
     private String userDisplay;
     private TextView textPoints;
@@ -47,6 +50,7 @@ public class Loyalty extends Fragment {
     private AlertDialog.Builder builder;
     private ImageView viewQR;
     private String accountEmail;
+    private SharedPreferences.Editor mEditor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,9 +63,11 @@ public class Loyalty extends Fragment {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         rules = view.findViewById(R.id.textLoyaltyContent);
         viewQR = view.findViewById(R.id.viewQR);
+        Refresh = view.findViewById(R.id.buttonRefresh);
+        mEditor = mPreferences.edit();
 
-        content = "Add points: \n per game paid = +100pts \n\n **Users will not receive points for games redeemed with points or coupons**";
-        content2 = "Subtract points:\nper game redeemed = -500pts \n\n **Users will not receive points for games redeemed with points or coupons**";
+        content = "Add points: \nEvery game you pay for = +100pts to your account! \n\nUsers will not receive points for the following: \n\n-Games redeemed with points \n-Games redeemed with coupons\n-Games bowled during nightly specials";
+        content2 = "Subtract points:\nEvery game you redeem = -500pts from your account! \n\n**Users may redeem points or coupons anytime open bowl is available!**";
 
         rules.setText(content);
 
@@ -83,11 +89,23 @@ public class Loyalty extends Fragment {
             }
         });
 
-        try {
-            getUserData(mPreferences.getString(getString(R.string.AuthToken), ""));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    getUserData(mPreferences.getString(getString(R.string.AuthToken), ""));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        accountEmail = mPreferences.getString(getString(R.string.EmailSave), "");
+
+        showPoints = mPreferences.getString(getString(R.string.PointsSave), "")+" pts";
+        textPoints.setText(showPoints);
+
+        generateQR();
 
         return view;
 
@@ -123,21 +141,13 @@ public class Loyalty extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    mEditor.putString(getString(R.string.PointsSave), userPoints);
+                    mEditor.commit();
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             textPoints.setText(userDisplay);
-
-                            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-
-                            try {
-                                BitMatrix bitMatrix = multiFormatWriter.encode(accountEmail, BarcodeFormat.QR_CODE, 700, 700);
-                                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                                viewQR.setImageBitmap(bitmap);
-                            } catch (WriterException e) {
-                                e.printStackTrace();
-                            }
+                            generateQR();
                         }
                     });
                 }  else if (response.code() == 401){
@@ -168,7 +178,7 @@ public class Loyalty extends Fragment {
     }
 
     public void showAlert() {
-        builder.setTitle("Logged Out")
+        builder.setTitle("Log Out")
                 .setMessage("Session has expired")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -176,6 +186,19 @@ public class Loyalty extends Fragment {
 
                     }
                 }).show();
+    }
+
+    public void generateQR() {
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(accountEmail, BarcodeFormat.QR_CODE, 700, 700);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            viewQR.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
     }
 
 
