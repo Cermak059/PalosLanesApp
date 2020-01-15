@@ -67,7 +67,7 @@ public class LoginPage extends AppCompatActivity {
         checkSharedPreferences();
 
         if (mPreferences.getString(getString(R.string.AuthToken), "") !=null) {
-            //loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
+            loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
             try {
                 verifyToken(mPreferences.getString(getString(R.string.AuthToken), ""));
             } catch (IOException e) {
@@ -97,7 +97,7 @@ public class LoginPage extends AppCompatActivity {
                     mPassword.requestFocus();
                     mPassword.setError("Field cannot be empty");
                 } else {
-                    //loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
+                    loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
                     //Save data when remember me checkbox is checked
                     if (mCheckbox.isChecked()) {
                         mEditor.putString(getString(R.string.CheckboxSave), "True");
@@ -261,7 +261,6 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void verifyToken(final String authToken) throws IOException {
-        MediaType MEDIA_TYPE = MediaType.parse("application/json");
         String url = "http://3.15.199.174:5000/Authenticate";
 
         OkHttpClient client = new OkHttpClient();
@@ -281,7 +280,6 @@ public class LoginPage extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                final String mMessage = response.body().string();
                 if (response.code() == 200) {
                     LoginPage.this.runOnUiThread(new Runnable() {
                         @Override
@@ -297,6 +295,9 @@ public class LoginPage extends AppCompatActivity {
                                 adminActivity();
                             }
                             else {
+                                if (loginDialogue != null) {
+                                    loginDialogue.dismiss();
+                                }
                                 builder.setTitle("Unexpected Error Occurred")
                                         .setMessage("Please login again")
                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -323,6 +324,9 @@ public class LoginPage extends AppCompatActivity {
                     LoginPage.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if (loginDialogue != null) {
+                                loginDialogue.dismiss();
+                            }
                             builder.setMessage("Unable to login at this time please try again later")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
@@ -339,7 +343,6 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void getUserData(String authToken) throws IOException {
-        MediaType MEDIA_TYPE = MediaType.parse("application/json");
         String url = "http://3.15.199.174:5000/Users";
 
         OkHttpClient client = new OkHttpClient();
@@ -417,18 +420,18 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void adminActivity() {
-        if (loginDialogue != null){
-            loginDialogue.dismiss();
-        }
         Intent adminPage = new Intent(this, adminActivity.class);
         startActivity(adminPage);
-    }
-    public void userActivity() {
         if (loginDialogue != null){
             loginDialogue.dismiss();
         }
+    }
+    public void userActivity() {
             Intent homepage = new Intent(this, MainActivity.class);
             startActivity(homepage);
+        if (loginDialogue != null){
+            loginDialogue.dismiss();
+        }
     }
     public void btnRegister (View view) {
         Intent signup = new Intent(this,SignUpPage.class);

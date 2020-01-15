@@ -39,10 +39,8 @@ public class Loyalty extends Fragment {
     private TextView rules;
     private String content;
     private String content2;
-    private String showPoints;
     private RadioButton mAdd;
     private RadioButton mRedeem;
-    private Button Refresh;
     private String userPoints;
     private String userDisplay;
     private TextView textPoints;
@@ -55,6 +53,9 @@ public class Loyalty extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_loyalty, container, false);
+
+        final String showPoints;
+        final Button Refresh;
 
         mRedeem = view.findViewById(R.id.radioButton2);
         mAdd = view.findViewById(R.id.radioButton);
@@ -111,7 +112,7 @@ public class Loyalty extends Fragment {
 
     }
 
-    public void getUserData(String authToken) throws IOException {
+    private void getUserData(String authToken) throws IOException {
         String url = "http://3.15.199.174:5000/Users";
 
         OkHttpClient client = new OkHttpClient();
@@ -177,7 +178,7 @@ public class Loyalty extends Fragment {
 
     }
 
-    public void showAlert() {
+    private void showAlert() {
         builder.setTitle("Log Out")
                 .setMessage("Session has expired")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -188,7 +189,7 @@ public class Loyalty extends Fragment {
                 }).show();
     }
 
-    public void generateQR() {
+    private void generateQR() {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
         try {

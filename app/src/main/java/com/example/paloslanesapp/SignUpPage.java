@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -264,7 +263,7 @@ public class SignUpPage extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String mMessage = response.body().string();
-                if (response.isSuccessful()) {
+                if (response.code()==200) {
                     Log.i("", mMessage);
                     SignUpPage.this.runOnUiThread(new Runnable() {
                         @Override
@@ -272,15 +271,30 @@ public class SignUpPage extends AppCompatActivity {
                             showNewDialog();
                         }
                     });
-                } else {
+                } else if (response.code()==400) {
                     Log.i("", mMessage);
                     SignUpPage.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(SignUpPage.this, mMessage, Toast.LENGTH_LONG).show();
+                            builder.setTitle("Try Again")
+                                    .setMessage(mMessage)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    }).show();
                         }
                     });
+                }else {
+                    builder.setTitle("Unexpected Error Occurred")
+                            .setMessage("Please try again")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
+                                }
+                            }).show();
                 }
             }
         });

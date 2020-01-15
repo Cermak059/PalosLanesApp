@@ -30,11 +30,10 @@ import okhttp3.Response;
 
 public class adminActivity extends AppCompatActivity {
 
-    private Button Scan;
+
     AlertDialog.Builder builder;
     private int pointValue;
     private String pointString;
-    private String authToken;
     private String accountID;
     private SharedPreferences mPreferences;
 
@@ -42,6 +41,8 @@ public class adminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+
+        final Button Scan;
 
         Scan = findViewById(R.id.buttonScan);
         builder = new AlertDialog.Builder(adminActivity.this);
@@ -167,7 +168,7 @@ public class adminActivity extends AppCompatActivity {
 
     public void managePoints() throws IOException {
 
-        authToken = mPreferences.getString(getString(R.string.AuthToken), "");
+        final String authToken = mPreferences.getString(getString(R.string.AuthToken), "");
 
         MediaType MEDIA_TYPE = MediaType.parse("application/json");
         String url = "http://3.15.199.174:5000/Points";

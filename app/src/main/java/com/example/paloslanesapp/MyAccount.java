@@ -1,7 +1,5 @@
 package com.example.paloslanesapp;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -27,9 +25,6 @@ public class MyAccount extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-        final ProgressDialog accountDialogue;
-        final AlertDialog.Builder builder;
-
         //accountDialogue = ProgressDialog.show( getActivity(), "Loading Data", "Please wait...");
         textFullName = view.findViewById(R.id.textFullName);
         textPoints = view.findViewById(R.id.textPoints);
@@ -38,7 +33,6 @@ public class MyAccount extends Fragment {
         textUsername = view.findViewById(R.id.textUsername);
         textPhoneNumber = view.findViewById(R.id.textPhoneNum);
         textLeagueMember = view.findViewById(R.id.textLeagueMember);
-        builder = new AlertDialog.Builder(getActivity());
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         LoadData();
