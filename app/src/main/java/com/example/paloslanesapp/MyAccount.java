@@ -52,7 +52,7 @@ public class MyAccount extends Fragment {
         final String userUsername;
         final String userLeague;
 
-            userPoints = mPreferences.getString(getString(R.string.PointsSave), "") + " pts";
+            userPoints = "Available Points: "+mPreferences.getString(getString(R.string.PointsSave), "") + " pts";
             userUsername = mPreferences.getString(getString(R.string.UsernameSave), "");
             userFirstName = mPreferences.getString(getString(R.string.FirstSave), "");
             userLastName = mPreferences.getString(getString(R.string.LastSave), "");

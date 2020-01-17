@@ -36,6 +36,7 @@ import okhttp3.Response;
 
 public class Loyalty extends Fragment {
 
+    private TextView header;
     private TextView rules;
     private String content;
     private String content2;
@@ -56,6 +57,8 @@ public class Loyalty extends Fragment {
 
         final String showPoints;
         final Button Refresh;
+        final String contentHeader2;
+        final String contentHeader;
 
         mRedeem = view.findViewById(R.id.radioButton2);
         mAdd = view.findViewById(R.id.radioButton);
@@ -63,20 +66,26 @@ public class Loyalty extends Fragment {
         builder = new AlertDialog.Builder(getActivity());
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         rules = view.findViewById(R.id.textLoyaltyContent);
+        header = view.findViewById(R.id.textLoyaltyHeader);
         viewQR = view.findViewById(R.id.viewQR);
         Refresh = view.findViewById(R.id.buttonRefresh);
         mEditor = mPreferences.edit();
 
-        content = "Add points: \nEvery game you pay for = +100pts to your account! \n\nUsers will not receive points for the following: \n\n-Games redeemed with points \n-Games redeemed with coupons\n-Games bowled during nightly specials";
-        content2 = "Subtract points:\nEvery game you redeem = -500pts from your account! \n\n**Users may redeem points or coupons anytime open bowl is available!**";
+        content = "Every game you pay for = +100pts to your account!\n\n**Points will not be added for games redeemed with points or coupons.**";
+        content2 = "Every game you redeem = -500pts from your account\n\n**Users may redeem points at anytime open bowl is available.**";
+        contentHeader2 = "Subract Points";
+        contentHeader = "Add Points";
 
         rules.setText(content);
+        header.setText(contentHeader);
+
 
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mAdd.isChecked()) {
                     rules.setText(content);
+                    header.setText(contentHeader);
                 }
             }
         });
@@ -86,6 +95,7 @@ public class Loyalty extends Fragment {
             public void onClick(View view) {
                 if (mRedeem.isChecked()) {
                     rules.setText(content2);
+                    header.setText(contentHeader2);
                 }
             }
         });
@@ -103,7 +113,7 @@ public class Loyalty extends Fragment {
 
         accountEmail = mPreferences.getString(getString(R.string.EmailSave), "");
 
-        showPoints = mPreferences.getString(getString(R.string.PointsSave), "")+" pts";
+        showPoints = "Available Points: "+mPreferences.getString(getString(R.string.PointsSave), "");
         textPoints.setText(showPoints);
 
         generateQR();
@@ -193,7 +203,7 @@ public class Loyalty extends Fragment {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(accountEmail, BarcodeFormat.QR_CODE, 700, 700);
+            BitMatrix bitMatrix = multiFormatWriter.encode(accountEmail, BarcodeFormat.QR_CODE, 500, 500);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             viewQR.setImageBitmap(bitmap);

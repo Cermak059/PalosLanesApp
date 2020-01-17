@@ -8,18 +8,26 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/palos_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/palos_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ScanActivity" />
+        <activity android:name=".QrCode"
+            android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name=".ScanActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".adminActivity"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".ResetPass" />
-        <activity android:name=".SignUpPage" />
-        <activity android:name=".LoginPage">
+        <activity android:name=".ResetPass"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignUpPage"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".LoginPage"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +37,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

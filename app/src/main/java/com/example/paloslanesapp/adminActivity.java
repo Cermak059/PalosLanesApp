@@ -33,7 +33,6 @@ public class adminActivity extends AppCompatActivity {
 
     AlertDialog.Builder builder;
     private int pointValue;
-    private String pointString;
     private String accountID;
     private SharedPreferences mPreferences;
 
@@ -43,8 +42,10 @@ public class adminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
 
         final Button Scan;
+        final Button Coupon;
 
         Scan = findViewById(R.id.buttonScan);
+        Coupon = findViewById(R.id.buttonCoupon);
         builder = new AlertDialog.Builder(adminActivity.this);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -53,6 +54,14 @@ public class adminActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent scanActivity = new Intent(adminActivity.this,ScanActivity.class);
                 startActivityForResult(scanActivity, 1001);
+            }
+        });
+
+        Coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent scanActivity = new Intent(adminActivity.this, ScanActivity.class);
+                startActivityForResult(scanActivity, 2001);
             }
         });
     }
@@ -80,6 +89,14 @@ public class adminActivity extends AppCompatActivity {
                             redeemDialogue();
                         }
                     }).show();
+
+        } else if (requestCode==2001) {
+            accountID = data.getStringExtra("Add Points");
+                            try {
+                                manageCoupons();
+                            }catch(IOException e){
+                                e.printStackTrace();
+                            }
 
         } else {
             builder.setTitle("QR Code Error")
@@ -253,6 +270,102 @@ public class adminActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void manageCoupons() throws IOException {
+        final String authToken = mPreferences.getString(getString(R.string.AuthToken), "");
+
+        MediaType MEDIA_TYPE = MediaType.parse("application/json");
+        String url = "http://3.15.199.174:5000/BuyOneGetOne";
+
+        OkHttpClient client = new OkHttpClient();
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("Email", accountID );
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE, postdata.toString());
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("X-Auth-Token", authToken)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String mMessage = response.body().string();
+                if (response.code() == 200) {
+                    Log.i("", mMessage);
+                    adminActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(adminActivity.this, "SUCCESS!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else if (response.code()==400){
+                    Log.i("", mMessage);
+                    adminActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.setTitle("Error")
+                                    .setMessage(mMessage)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    }).show();
+                        }
+                    });
+
+                } else if (response.code()==401) {
+                    Log.i("", mMessage);
+                    adminActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.setTitle("Error")
+                                    .setMessage("Unauthorized to perform this action")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    }).show();
+                        }
+                    });
+                } else {
+                    Log.i("", mMessage);
+                    adminActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.setTitle("Error")
+                                    .setMessage("Unexpected error has occurred please try again!")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    }).show();
+
+                        }
+                    });
+
+                }
+            }
+        });
+
     }
 
 }

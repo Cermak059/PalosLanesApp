@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PalosLanesApp</string>
+    <string name="app_name">Palos Lanes</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -37,7 +37,7 @@
     <string name="FirstN">First Name:</string>
     <string name="LastN">Last Name:</string>
     <string name="PhoneN">Phone:</string>
-    <string name="ExamplePhone">708endash123endash1234</string>
+    <string name="ExamplePhone">708-123-1234</string>
     <string name="HeaderSign">CREATE ACCOUNT</string>
     <string name="LeagueMem">Are you a current league member?</string>
     <string name="RecoverPass">Please enter your email address:</string>
@@ -58,7 +58,7 @@
     <string name="BirthExample">03/29/1993</string>
     <string name="ForgotPassButton">Forgot Password?</string>
     <string name="BtnRequest">Send Email</string>
-    <string name="BtnAddPoints">+/- Points</string>
+    <string name="BtnAddPoints">Manage Points</string>
     <string name="BtnCoupon">Scan Coupon</string>
     <string name="AdminTitle">Manage Points</string>
     <string name="AdminTitle2">Scan Coupons</string>
@@ -74,7 +74,9 @@
     <string name="ButtonContent">Home image button</string>
     <string name="SlideshowContent">Specials slideshow</string>
     <string name="QRcodeContent">QR Code</string>
+    <string name="CouponContent">BOGO Coupon</string>
     <string name="ButtonRefresh">REFRESH</string>
     <string name="PinContent">Account page logo pin</string>
+    <string name="CouponHeader">Bowling Coupons</string>
 
 </resources>
