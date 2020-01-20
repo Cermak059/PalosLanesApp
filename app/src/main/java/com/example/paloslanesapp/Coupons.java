@@ -130,14 +130,20 @@ public class Coupons extends Fragment {
                         }
                     });
                 } else {
-                    builder.setTitle("Error")
-                            .setMessage("Unexpected error occurred please try again")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.setTitle("Error")
+                                    .setMessage("Unexpected error has occurred please try again")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                                }
-                            }).show();
+                                        }
+                                    }).show();
+
+                        }
+                    });
                 }
             }
         });

@@ -37,7 +37,7 @@
     <string name="FirstN">First Name:</string>
     <string name="LastN">Last Name:</string>
     <string name="PhoneN">Phone:</string>
-    <string name="ExamplePhone">708-123-1234</string>
+    <string name="ExamplePhone">708&#8211;123&#8211;1234</string>
     <string name="HeaderSign">CREATE ACCOUNT</string>
     <string name="LeagueMem">Are you a current league member?</string>
     <string name="RecoverPass">Please enter your email address:</string>
@@ -78,5 +78,18 @@
     <string name="ButtonRefresh">REFRESH</string>
     <string name="PinContent">Account page logo pin</string>
     <string name="CouponHeader">Bowling Coupons</string>
+    <string name="Hours">Open Bowling Hours</string>
+    <string name="Monday">Monday: 9am - Midnight</string>
+    <string name="Tuesday">Tuesday: 9am - 5pm and 9:30pm - Midnight</string>
+    <string name="Wednesday">Wednesday: 9am - 5pm and 9:30pm - Midnight</string>
+    <string name="Thursday">Thursday: 9am - Midnight</string>
+    <string name="Friday">Friday: 9am - 5pm and 9:30pm - Midnight</string>
+    <string name="Saturday">Saturday: 9am - 4pm and 9pm - Midnight</string>
+    <string name="Sunday">Sunday: 9am - Midnight</string>
+    <string name="CallUs">**Hours may vary. Please call us for availability!**</string>
+    <string name="Logout">Logout</string>
+    <string name="CouponsError">Coupon image error</string>
+    <string name="MaskingUnit">Masking Unit</string>
+    <string name="MapHeader">Find Us</string>
 
 </resources>

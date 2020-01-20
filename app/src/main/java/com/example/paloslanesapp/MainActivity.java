@@ -53,10 +53,7 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.menu_Logout) {
-            finish();
-        }
-        else if (id == R.id.my_account) {
+        if (id == R.id.my_account) {
             showFragmentAccount();
         }
         return super.onOptionsItemSelected(item);

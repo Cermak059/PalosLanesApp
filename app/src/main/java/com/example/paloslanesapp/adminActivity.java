@@ -74,30 +74,36 @@ public class adminActivity extends AppCompatActivity {
         if(requestCode==1001)
         {
             accountID = data.getStringExtra("Add Points");
+            if (accountID != null) {
+                builder.setTitle("Account " + accountID)
+                        .setMessage("Would you like to add or redeem points?")
+                        .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                addDialogue();
 
-            builder.setMessage("Would you like to add or redeem points?")
-                    .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            addDialogue();
-
-                        }
-                    })
-                    .setNegativeButton("REDEEM", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            redeemDialogue();
-                        }
-                    }).show();
-
+                            }
+                        })
+                        .setNegativeButton("REDEEM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                redeemDialogue();
+                            }
+                        }).show();
+            }else {
+                Log.i("", "No data from scan");
+            }
         } else if (requestCode==2001) {
             accountID = data.getStringExtra("Add Points");
-                            try {
-                                manageCoupons();
-                            }catch(IOException e){
-                                e.printStackTrace();
-                            }
-
+            if (accountID != null) {
+                try {
+                    manageCoupons();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                Log.i("", "No data from scan");
+            }
         } else {
             builder.setTitle("QR Code Error")
                     .setMessage("Please try again")

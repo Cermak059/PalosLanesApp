@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -52,6 +55,7 @@ public class LoginPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.splashScreenTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
 
@@ -66,18 +70,7 @@ public class LoginPage extends AppCompatActivity {
 
         checkSharedPreferences();
 
-        if (mPreferences.getString(getString(R.string.AuthToken), "") !=null) {
-            loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
-            try {
-                verifyToken(mPreferences.getString(getString(R.string.AuthToken), ""));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            Log.i("No auth token found","");
-        }
-
+        checkConnection();
 
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +90,7 @@ public class LoginPage extends AppCompatActivity {
                     mPassword.requestFocus();
                     mPassword.setError("Field cannot be empty");
                 } else {
-                    loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
+                    //loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
                     //Save data when remember me checkbox is checked
                     if (mCheckbox.isChecked()) {
                         mEditor.putString(getString(R.string.CheckboxSave), "True");
@@ -122,11 +115,16 @@ public class LoginPage extends AppCompatActivity {
                         mEditor.putString(getString(R.string.PasswordSave), "");
                         mEditor.commit();
                     }
+                    if (isOnline()) {
 
-                    try {
-                        postRequest();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        try {
+                            postRequest();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        loginDialogue.dismiss();
+                        connectionAlert();
                     }
 
                 }
@@ -419,6 +417,33 @@ public class LoginPage extends AppCompatActivity {
 
     }
 
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void checkConnection(){
+        if(isOnline()){
+            if (mPreferences.getString(getString(R.string.AuthToken), "") !=null) {
+                loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
+                try {
+                    verifyToken(mPreferences.getString(getString(R.string.AuthToken), ""));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.i("No auth token found","");
+            }
+        }else{
+           connectionAlert();
+        }
+    }
+
     public void adminActivity() {
         Intent adminPage = new Intent(this, adminActivity.class);
         startActivity(adminPage);
@@ -451,5 +476,15 @@ public class LoginPage extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+    public void  connectionAlert() {
+        builder.setTitle("Connection Error")
+                .setMessage("Please check your internet connection and try again!")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }).show();
     }
 }

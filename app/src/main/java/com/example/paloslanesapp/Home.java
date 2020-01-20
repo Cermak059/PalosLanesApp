@@ -15,19 +15,32 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Home extends Fragment {
+import static android.os.Build.VERSION_CODES.N;
+
+
+public class Home extends Fragment implements OnMapReadyCallback {
+
+    private MapView mMapView;
+    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         final TextView textView;
-
         final ImageButton button1 = view.findViewById(R.id.imageButton1);
         final ImageButton button2 = view.findViewById(R.id.imageButton2);
         final ImageButton button3 = view.findViewById(R.id.imageButton3);
         final ImageButton button5 = view.findViewById(R.id.imageButton);
+        mMapView = view.findViewById(R.id.mapView);
         final SharedPreferences mPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         textView = view.findViewById(R.id.textHomeHeader);
@@ -67,6 +80,7 @@ public class Home extends Fragment {
         AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
 
+        initGoogleMap(savedInstanceState);
 
         return view;
     }
@@ -93,5 +107,73 @@ public class Home extends Fragment {
         transaction.commit();
     }
 
+    private void initGoogleMap(Bundle savedInstanceState) {
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        }
+        mMapView.onCreate(mapViewBundle);
+
+        mMapView.getMapAsync(this);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if (mapViewBundle == null) {
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+
+        mMapView.onSaveInstanceState(mapViewBundle);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mMapView.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mMapView.onStop();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        LatLng palos = new LatLng(41.69080,-87.80876);
+        map.addMarker(new MarkerOptions().position(palos).title("Palos Lanes"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(palos));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(palos,15));
+
+    }
+
+    @Override
+    public void onPause() {
+        mMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mMapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
 
 }
