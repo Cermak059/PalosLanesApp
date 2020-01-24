@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,53 +27,40 @@ import okhttp3.Response;
 public class Coupons extends Fragment {
 
     private AlertDialog.Builder builder;
-    private ImageButton BOGO;
-    private ImageView error;
+    private ImageView BOGO;
+    private ImageView Error;
     private TextView info;
     private String yesCoupon;
     private String noCoupon;
+    private SharedPreferences mPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_coupons, container, false);
 
         BOGO = view.findViewById(R.id.imageCoupon);
-        final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Error = view.findViewById(R.id.imageError);
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         builder = new AlertDialog.Builder(getActivity());
         info = view.findViewById(R.id.textCouponInfo);
-        error = view.findViewById(R.id.imageError);
         noCoupon = "Oops Sorry! You have already used your coupon for this week!";
         yesCoupon = "Bowl on! Your coupons have arrived!";
 
         BOGO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent QRcode = new Intent(getActivity(), QrCode.class);
                 startActivity(QRcode);
-
             }
         });
-        error.setVisibility(View.VISIBLE);
-        BOGO.setVisibility(View.GONE);
-        info.setText(noCoupon);
 
-        if (mPreferences.getString(getString(R.string.AuthToken), "") !=null) {
-            //loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
-            try {
-                checkCoupons(mPreferences.getString(getString(R.string.AuthToken), ""));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-        } else {
-            Log.i("No auth token found","");
-        }
+        checkAuthToken();
 
         return view;
     }
 
-    public void checkCoupons(String authToken) throws IOException {
+    private void checkCoupons(String authToken) throws IOException {
 
         String url = "http://3.15.199.174:5000/BuyOneGetOne";
 
@@ -100,8 +86,7 @@ public class Coupons extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            error.setVisibility(View.GONE);
-                            BOGO.setVisibility(View.VISIBLE);
+                            BOGO.setImageResource(R.drawable.bogoimagecopy);
                             info.setText(yesCoupon);
                         }
                     });
@@ -124,8 +109,7 @@ public class Coupons extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            error.setVisibility(View.VISIBLE);
-                            BOGO.setVisibility(View.GONE);
+                            Error.setImageResource(R.drawable.errorsymbol);
                             info.setText(noCoupon);
                         }
                     });
@@ -147,6 +131,21 @@ public class Coupons extends Fragment {
                 }
             }
         });
+
+    }
+
+    private void checkAuthToken() {
+
+        if (mPreferences.getString(getString(R.string.AuthToken), "") !=null) {
+            try {
+                checkCoupons(mPreferences.getString(getString(R.string.AuthToken), ""));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            Log.i("No auth token found","");
+        }
 
     }
 

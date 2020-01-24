@@ -90,7 +90,7 @@ public class LoginPage extends AppCompatActivity {
                     mPassword.requestFocus();
                     mPassword.setError("Field cannot be empty");
                 } else {
-                    //loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
+                    loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
                     //Save data when remember me checkbox is checked
                     if (mCheckbox.isChecked()) {
                         mEditor.putString(getString(R.string.CheckboxSave), "True");
@@ -479,7 +479,7 @@ public class LoginPage extends AppCompatActivity {
     }
     public void  connectionAlert() {
         builder.setTitle("Connection Error")
-                .setMessage("Please check your internet connection and try again!")
+                .setMessage("Please check your internet connection!")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

@@ -75,7 +75,7 @@
     <string name="SlideshowContent">Specials slideshow</string>
     <string name="QRcodeContent">QR Code</string>
     <string name="CouponContent">BOGO Coupon</string>
-    <string name="ButtonRefresh">REFRESH</string>
+    <string name="ButtonRefresh">REFRESH POINTS</string>
     <string name="PinContent">Account page logo pin</string>
     <string name="CouponHeader">Bowling Coupons</string>
     <string name="Hours">Open Bowling Hours</string>
@@ -91,5 +91,7 @@
     <string name="CouponsError">Coupon image error</string>
     <string name="MaskingUnit">Masking Unit</string>
     <string name="MapHeader">Find Us</string>
+    <string name="menuEvent">Event Packages</string>
+    <string name="CouponRefresh">REFRESH COUPONS</string>
 
 </resources>

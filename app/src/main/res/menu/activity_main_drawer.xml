@@ -27,7 +27,7 @@
         <item
             android:id="@+id/nav_PartyPackages"
             android:icon="@drawable/party"
-            android:title="Event Packages" />
+            android:title="@string/menuEvent" />
     </group>
 
 
