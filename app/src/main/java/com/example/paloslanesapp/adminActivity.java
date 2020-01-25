@@ -265,8 +265,8 @@ public class adminActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    builder.setTitle("Error")
-                            .setMessage("Unexpected error has occurred please try again!")
+                    builder.setTitle("Unexpected Error Occurred")
+                            .setMessage("Please try again!")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -356,8 +356,8 @@ public class adminActivity extends AppCompatActivity {
                     adminActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            builder.setTitle("Error")
-                                    .setMessage("Unexpected error has occurred please try again!")
+                            builder.setTitle("Unexpected Error Occurred")
+                                    .setMessage("Please try again!")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
