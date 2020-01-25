@@ -216,8 +216,8 @@ public class LoginPage extends AppCompatActivity {
                                 if (loginDialogue != null){
                                     loginDialogue.dismiss();
                                 }
-                                builder.setTitle("Error")
-                                        .setMessage("Could not login at this time please try again")
+                                builder.setTitle("Login Failed")
+                                        .setMessage("Unknown access level please try again")
                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -246,7 +246,8 @@ public class LoginPage extends AppCompatActivity {
                     });
 
                 } else {
-                    builder.setMessage("Unable to login at this time")
+                    builder.setTitle("Login Failed")
+                            .setMessage("Unable to login at this time")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -296,8 +297,8 @@ public class LoginPage extends AppCompatActivity {
                                 if (loginDialogue != null) {
                                     loginDialogue.dismiss();
                                 }
-                                builder.setTitle("Unexpected Error Occurred")
-                                        .setMessage("Please login again")
+                                builder.setTitle("Login Failed")
+                                        .setMessage("Unknown access level please try again")
                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -325,7 +326,8 @@ public class LoginPage extends AppCompatActivity {
                             if (loginDialogue != null) {
                                 loginDialogue.dismiss();
                             }
-                            builder.setMessage("Unable to login at this time please try again later")
+                            builder.setTitle("Login Failed")
+                                    .setMessage("Unable to login at this time")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
