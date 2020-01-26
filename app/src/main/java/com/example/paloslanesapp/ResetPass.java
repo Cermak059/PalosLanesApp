@@ -92,23 +92,42 @@ public class ResetPass extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String mMessage = response.body().string();
-                if (response.isSuccessful()) {
-                    Log.i("", mMessage);
+                if (response.code()==200) {
                     ResetPass.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             showNewDialog();
                         }
                     });
-                } else {
-                    Log.i("", mMessage);
+                } else if (response.code()==400){
                     ResetPass.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(ResetPass.this, mMessage, Toast.LENGTH_LONG).show();
+                            builder.setTitle("Try Again")
+                                    .setMessage(mMessage)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    }).show();
                         }
                     });
 
+                } else {
+                    ResetPass.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.setTitle("Unexpected Error Occurred")
+                                    .setMessage("Please try again")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    }).show();
+                        }
+                    });
                 }
             }
         });

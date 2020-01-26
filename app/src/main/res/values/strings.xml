@@ -7,7 +7,8 @@
     <string name="my_account">My Account</string>
     <string name="menu_home">Home</string>
     <string name="HeaderIMG">Palos Lanes Header</string>
-    <string name="Username">Enter Username</string>
+    <string name="Username">Enter Desired Username</string>
+    <string name="UsernameLogin">Enter Username</string>
     <string name="Password">Enter Password</string>
     <string name="checkRemember">Remember Me</string>
     <string name="Login">Login</string>

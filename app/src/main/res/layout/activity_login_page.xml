@@ -33,12 +33,13 @@
                 android:background="#FFFFFF"
                 android:elevation="30dp"
                 android:ems="10"
-                android:hint="@string/Username"
+                android:hint="@string/UsernameLogin"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editPassword"
@@ -53,7 +54,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editUserName" />
+                app:layout_constraintTop_toBottomOf="@+id/editUserName"
+                android:importantForAutofill="no" />
 
             <CheckBox
                 android:id="@+id/checkBoxRemember"

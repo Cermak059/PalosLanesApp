@@ -75,8 +75,8 @@ public class adminActivity extends AppCompatActivity {
         {
             accountID = data.getStringExtra("Add Points");
             if (accountID != null) {
-                builder.setTitle("Account " + accountID)
-                        .setMessage("Would you like to add or redeem points?")
+                builder.setTitle(accountID)
+                        .setMessage("Would you like to add or redeem points to this account?")
                         .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
