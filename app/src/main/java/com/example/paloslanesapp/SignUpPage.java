@@ -307,7 +307,6 @@ public class SignUpPage extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
-                        New();
                     }
                 })
                 .show();
