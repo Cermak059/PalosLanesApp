@@ -71,10 +71,10 @@ public class Loyalty extends Fragment {
         Refresh = view.findViewById(R.id.buttonRefresh);
         mEditor = mPreferences.edit();
 
-        content = "Every game you pay for = +100pts to your account!\n\n**Points will not be added for games redeemed with points or coupons.**";
-        content2 = "Every game you redeem = -500pts from your account\n\n**Users may redeem points at anytime open bowl is available.**";
-        contentHeader2 = "Subract Points";
-        contentHeader = "Add Points";
+        content = "1 GAME PAID = 100 POINTS\n\n**Points will not be added during bowling specials**";
+        content2 = "1 GAME REDEEMED = -500 POINTS\n\n**Users may redeem points at anytime**";
+        contentHeader2 = "SUBTRACT";
+        contentHeader = "ADD POINTS";
 
         rules.setText(content);
         header.setText(contentHeader);

@@ -15,15 +15,15 @@ import androidx.fragment.app.Fragment;
 
 public class Party extends Fragment {
 
-    private ImageView sparePack;
+    //private ImageView sparePack;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_party, container, false);
 
-        sparePack = view.findViewById(R.id.imageSpare);
+        //sparePack = view.findViewById(R.id.imageSpare);
 
-        sparePack.setOnClickListener(new View.OnClickListener() {
+        /*sparePack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final ObjectAnimator oa1 = ObjectAnimator.ofFloat(sparePack, "scaleX", 1f, 0f);
@@ -40,7 +40,10 @@ public class Party extends Fragment {
                 });
                 oa1.start();
             }
-        });
+        }); */
+
+
+
         return view;
 
     }
