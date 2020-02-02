@@ -431,7 +431,7 @@ public class LoginPage extends AppCompatActivity {
 
     public void checkConnection(){
         if(isOnline()){
-            if (mPreferences.getString(getString(R.string.AuthToken), "") !=null) {
+            if (mPreferences.getString(getString(R.string.AuthToken), null) !=null) {
                 loginDialogue = ProgressDialog.show(LoginPage.this, "Logging in", "Please wait...");
                 try {
                     verifyToken(mPreferences.getString(getString(R.string.AuthToken), ""));
