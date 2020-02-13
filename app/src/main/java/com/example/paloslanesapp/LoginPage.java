@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -467,6 +468,9 @@ public class LoginPage extends AppCompatActivity {
     public void btnForgot (View view) {
         Intent resetPass = new Intent(this,ResetPass.class);
         startActivity(resetPass);
+    }
+    public void btnPrivacy (View view) {
+        startActivity((new Intent(Intent.ACTION_VIEW, Uri.parse("https://chicagolandbowlingservice.com/privacy-policy"))));
     }
 
     public void showAlert() {

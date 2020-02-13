@@ -95,5 +95,6 @@
     <string name="menuEvent">Event Packages</string>
     <string name="CouponRefresh">REFRESH COUPONS</string>
     <string name="PartyInfo">Please call us at 708-974-3200 for availability!</string>
+    <string name="PrivacyPolicy">Privacy Policy</string>
 
 </resources>
