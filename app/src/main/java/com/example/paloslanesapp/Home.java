@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import static android.os.Build.VERSION_CODES.N;
 
 
-public class Home extends Fragment implements OnMapReadyCallback {
+public class Home extends Fragment {
 
     private MapView mMapView;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
@@ -40,13 +40,13 @@ public class Home extends Fragment implements OnMapReadyCallback {
         final ImageButton button2 = view.findViewById(R.id.imageButton2);
         final ImageButton button3 = view.findViewById(R.id.imageButton3);
         final ImageButton button5 = view.findViewById(R.id.imageButton);
-        mMapView = view.findViewById(R.id.mapView);
-        final SharedPreferences mPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //mMapView = view.findViewById(R.id.mapView);
+        final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         textView = view.findViewById(R.id.textHomeHeader);
 
         final String Name = mPreferences.getString(getString(R.string.FirstSave), "");
-        final String NameDisplay = "Welcome, "+Name;
+        final String NameDisplay = "Welcome, " + Name;
         textView.setText(NameDisplay);
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +80,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
         AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
 
-        initGoogleMap(savedInstanceState);
+        //initGoogleMap(savedInstanceState);
 
         return view;
     }
@@ -92,6 +92,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
     private void showFragmentCoupons() {
         Coupons fragment = new Coupons();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -99,6 +100,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
     private void showFragmentParty() {
         Party fragment = new Party();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -106,8 +108,8 @@ public class Home extends Fragment implements OnMapReadyCallback {
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
-    private void initGoogleMap(Bundle savedInstanceState) {
+}
+    /*private void initGoogleMap(Bundle savedInstanceState) {
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
@@ -176,4 +178,4 @@ public class Home extends Fragment implements OnMapReadyCallback {
         mMapView.onLowMemory();
     }
 
-}
+} */

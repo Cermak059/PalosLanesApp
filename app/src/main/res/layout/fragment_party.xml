@@ -34,29 +34,32 @@
 
             <ImageView
                 android:id="@+id/imageSpare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:contentDescription="@string/PartyInfo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/family_content" />
+                app:srcCompat="@drawable/strike_package" />
 
             <ImageView
                 android:id="@+id/imageStrike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/PartyInfo"
                 app:layout_constraintLeft_toRightOf="@id/imageSpare"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/family_content" />
+                app:srcCompat="@drawable/spare_package" />
 
             <ImageView
                 android:id="@+id/imageFamily"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/PartyInfo"
                 app:layout_constraintLeft_toRightOf="@id/imageStrike"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/family_content" />
+                app:srcCompat="@drawable/family_savings" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </HorizontalScrollView>
 
