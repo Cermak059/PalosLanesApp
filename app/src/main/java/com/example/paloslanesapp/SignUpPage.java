@@ -173,9 +173,9 @@ public class SignUpPage extends AppCompatActivity {
                     mUsername.requestFocus();
                     mUsername.setError("Field cannot be empty");
                 }
-                else if (Username.length() == 1) {
+                else if (Username.length() < 3) {
                     mUsername.requestFocus();
-                    mUsername.setError("Must contain minimum 2 characters");
+                    mUsername.setError("Must contain minimum 3 characters");
                 }
                 else if (!Username.matches("[a-zA-Z0-9]+")) {
                     mUsername.requestFocus();

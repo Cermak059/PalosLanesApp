@@ -65,6 +65,17 @@
                 app:layout_constraintTop_toBottomOf="@id/textCouponInfo" />
 
             <ImageView
+                android:id="@+id/thanksCoupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/CouponContent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageCoupon" />
+
+            <ImageView
                 android:id="@+id/imageError"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
