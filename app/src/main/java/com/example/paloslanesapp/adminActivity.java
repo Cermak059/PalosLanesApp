@@ -34,6 +34,9 @@ public class adminActivity extends AppCompatActivity {
     AlertDialog.Builder builder;
     private int pointValue;
     private String accountID;
+    private String scanRes;
+    private String[] coupData;
+    private String coupType;
     private SharedPreferences mPreferences;
 
     @Override
@@ -94,7 +97,11 @@ public class adminActivity extends AppCompatActivity {
                 Log.i("", "No data from scan");
             }
         } else if (requestCode==2001) {
-            accountID = data.getStringExtra("Add Points");
+            scanRes = data.getStringExtra("Add Points");
+            coupData = scanRes.split("\\n");
+            accountID = coupData[0];
+            coupType = coupData[1];
+
             if (accountID != null) {
                 try {
                     manageCoupons();
@@ -282,13 +289,14 @@ public class adminActivity extends AppCompatActivity {
         final String authToken = mPreferences.getString(getString(R.string.AuthToken), "");
 
         MediaType MEDIA_TYPE = MediaType.parse("application/json");
-        String url = "http://3.15.199.174:5000/BuyOneGetOne";
+        String url = "http://3.15.199.174:5000/RedeemCoupon";
 
         OkHttpClient client = new OkHttpClient();
 
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("Email", accountID );
+            postdata.put("Coupon", coupType);
         } catch(JSONException e){
             e.printStackTrace();
         }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import android.util.Log;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -100,23 +102,18 @@ public class Coupons extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 final String mMessage = response.body().string();
                 if (response.code() == 200) {
-
                     try {
                         JSONObject resObj = new JSONObject(mMessage);
                         JSONArray usedCoupons = resObj.getJSONArray("Used");
-
                         for(int i=0; i<usedCoupons.length(); i++) {
                             if(usedCoupons.getString(i).equals("BOGO")) {
                                 BOGO = true;
                             }
-                            else if(usedCoupons.getString(i).equals("Thank You")) {
+                            if(usedCoupons.getString(i).equals("Thank You")) {
                                 ThankYou = true;
-                            }
-                            else if(usedCoupons.getString(i).equals("Limited")) {
+                           }
+                            if(usedCoupons.getString(i).equals("Limited")) {
                                 LimitedTime = true;
-                            }
-                            else {
-
                             }
                         }
                     } catch (JSONException e) {
@@ -133,7 +130,7 @@ public class Coupons extends Fragment {
                                 THANKSimage.setImageResource(R.drawable.thank_you_coupon);
                                 info.setText(yesCoupon);
                             }
-                            else {
+                            if (BOGO && ThankYou) {
                                 Error.setImageResource(R.drawable.errorsymbol);
                                 info.setText(noCoupon);
                             }
