@@ -13,11 +13,13 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-public class QrCode extends Activity {
+public class ThanksQrCode extends Activity {
 
     private ImageView imageView;
     private SharedPreferences mPreferences;
     private String accountEmail;
+    private String coupType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +30,18 @@ public class QrCode extends Activity {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         accountEmail = mPreferences.getString(getString(R.string.EmailSave), "");
+        coupType = "Thank You";
 
-        generateQR();
+        String coupData = accountEmail + "\n" + coupType;
+
+        generateQR(coupData);
     }
 
-    private void generateQR() {
+    private void generateQR(String coupData) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(accountEmail, BarcodeFormat.QR_CODE, 500, 500);
+            BitMatrix bitMatrix = multiFormatWriter.encode(coupData, BarcodeFormat.QR_CODE, 500, 500);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             imageView.setImageBitmap(bitmap);
@@ -45,3 +50,5 @@ public class QrCode extends Activity {
         }
     }
 }
+
+

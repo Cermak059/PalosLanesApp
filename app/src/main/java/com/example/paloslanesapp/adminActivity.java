@@ -102,7 +102,7 @@ public class adminActivity extends AppCompatActivity {
             accountID = coupData[0];
             coupType = coupData[1];
 
-            if (accountID != null) {
+            if (scanRes != null) {
                 try {
                     manageCoupons();
                 } catch (IOException e) {

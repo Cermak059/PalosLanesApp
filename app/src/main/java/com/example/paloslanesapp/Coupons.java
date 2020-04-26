@@ -60,7 +60,7 @@ public class Coupons extends Fragment {
         BOGOimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent QRcode = new Intent(getActivity(), QrCode.class);
+                Intent QRcode = new Intent(getActivity(), BogoQrCode.class);
                 startActivity(QRcode);
             }
         });
@@ -68,7 +68,7 @@ public class Coupons extends Fragment {
         THANKSimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent QRcode = new Intent(getActivity(), QrCode.class);
+                Intent QRcode = new Intent(getActivity(), ThanksQrCode.class);
                 startActivity(QRcode);
             }
         });

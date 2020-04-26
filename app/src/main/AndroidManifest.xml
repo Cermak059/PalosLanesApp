@@ -15,7 +15,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".QrCode"
+            android:name=".BogoQrCode"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".ThanksQrCode"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".ScanActivity"
