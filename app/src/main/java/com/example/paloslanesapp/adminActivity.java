@@ -36,7 +36,9 @@ public class adminActivity extends AppCompatActivity {
     private String accountID;
     private String scanRes;
     private String[] coupData;
+    private String[] pointsData;
     private String coupType;
+    private String centerID;
     private SharedPreferences mPreferences;
 
     @Override
@@ -74,9 +76,11 @@ public class adminActivity extends AppCompatActivity {
     {
         super.onActivityResult(requestCode, resultCode, data);
         // check if the request code is same as what is passed  here it is 2
-        if(requestCode==1001)
-        {
-            accountID = data.getStringExtra("Add Points");
+        if(requestCode==1001) {
+            scanRes = data.getStringExtra("Add Points");
+            pointsData = scanRes.split("\\n");
+            accountID = pointsData[0];
+            centerID = pointsData[1];
             if (accountID != null) {
                 builder.setTitle(accountID)
                         .setMessage("Would you like to add or redeem points to this account?")
@@ -101,7 +105,7 @@ public class adminActivity extends AppCompatActivity {
             coupData = scanRes.split("\\n");
             accountID = coupData[0];
             coupType = coupData[1];
-
+            centerID = coupData[2];
             if (scanRes != null) {
                 try {
                     manageCoupons();
@@ -209,6 +213,7 @@ public class adminActivity extends AppCompatActivity {
         try {
             postdata.put("Email", accountID );
             postdata.put("Points", pointValue);
+            postdata.put("CenterID", centerID);
         } catch(JSONException e){
             e.printStackTrace();
         }
@@ -297,6 +302,7 @@ public class adminActivity extends AppCompatActivity {
         try {
             postdata.put("Email", accountID );
             postdata.put("Coupon", coupType);
+            postdata.put("CenterID", centerID);
         } catch(JSONException e){
             e.printStackTrace();
         }

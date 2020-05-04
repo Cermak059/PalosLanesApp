@@ -41,6 +41,7 @@ public class SignUpPage extends AppCompatActivity {
     CheckBox mCheckBox;
     Button mSubmit;
     AlertDialog.Builder builder;
+    private static final String CenterID = "PalosLanes";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,6 +242,7 @@ public class SignUpPage extends AppCompatActivity {
             postdata.put("League", League);
             postdata.put("Username", Username);
             postdata.put("Password", Password);
+            postdata.put("CenterID", CenterID);
         } catch(JSONException e){
             e.printStackTrace();
         }

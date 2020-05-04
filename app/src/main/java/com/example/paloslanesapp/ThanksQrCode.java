@@ -19,6 +19,7 @@ public class ThanksQrCode extends Activity {
     private SharedPreferences mPreferences;
     private String accountEmail;
     private String coupType;
+    private static final String CenterID = "PalosLanes";
 
 
     @Override
@@ -32,7 +33,7 @@ public class ThanksQrCode extends Activity {
         accountEmail = mPreferences.getString(getString(R.string.EmailSave), "");
         coupType = "Thank You";
 
-        String coupData = accountEmail + "\n" + coupType;
+        String coupData = accountEmail + "\n" + coupType + "\n" + CenterID;
 
         generateQR(coupData);
     }

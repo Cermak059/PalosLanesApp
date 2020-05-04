@@ -50,6 +50,8 @@ public class Loyalty extends Fragment {
     private ImageView viewQR;
     private String accountEmail;
     private SharedPreferences.Editor mEditor;
+    private static final String CenterID = "PalosLanes";
+    private String pointsData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -112,11 +114,12 @@ public class Loyalty extends Fragment {
         });
 
         accountEmail = mPreferences.getString(getString(R.string.EmailSave), "");
+        pointsData = accountEmail + "\n" + CenterID;
 
         showPoints = "Available Points: "+mPreferences.getString(getString(R.string.PointsSave), "");
         textPoints.setText(showPoints);
 
-        generateQR();
+        generateQR(pointsData);
 
         return view;
 
@@ -158,7 +161,7 @@ public class Loyalty extends Fragment {
                         @Override
                         public void run() {
                             textPoints.setText(userDisplay);
-                            generateQR();
+                            generateQR(pointsData);
                         }
                     });
                 }  else if (response.code() == 401){
@@ -199,11 +202,11 @@ public class Loyalty extends Fragment {
                 }).show();
     }
 
-    private void generateQR() {
+    private void generateQR(String pointsData) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(accountEmail, BarcodeFormat.QR_CODE, 500, 500);
+            BitMatrix bitMatrix = multiFormatWriter.encode(pointsData, BarcodeFormat.QR_CODE, 500, 500);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             viewQR.setImageBitmap(bitmap);
