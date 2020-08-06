@@ -27,40 +27,47 @@
 
             <EditText
                 android:id="@+id/editUserName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
-                android:background="#FFFFFF"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/et_style"
+                android:drawableStart="@drawable/outline_person_24"
                 android:elevation="30dp"
                 android:ems="10"
                 android:hint="@string/UsernameLogin"
+                android:importantForAutofill="no"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2"
-                android:importantForAutofill="no" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
             <EditText
                 android:id="@+id/editPassword"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
-                android:background="#FFFFFF"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/et_style"
+                android:drawableStart="@drawable/outline_lock_24"
                 android:elevation="30dp"
                 android:ems="10"
                 android:hint="@string/Password"
+                android:importantForAutofill="no"
                 android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editUserName"
-                android:importantForAutofill="no" />
+                app:layout_constraintTop_toBottomOf="@+id/editUserName" />
 
             <CheckBox
                 android:id="@+id/checkBoxRemember"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="30dp"
                 android:text="@string/checkRemember"
                 app:layout_constraintEnd_toStartOf="@+id/btnLogin"
@@ -70,9 +77,12 @@
 
             <Button
                 android:id="@+id/btnLogin"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/button_style"
                 android:text="@string/Login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -104,6 +114,7 @@
                 android:layout_marginBottom="40dp"
                 android:onClick="btnRegister"
                 android:text="@string/RegisterHere"
+                android:background="@drawable/button_style"
                 android:textColor="#0000FF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

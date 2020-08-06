@@ -71,7 +71,8 @@
     <string name="Dialogue">Please select the number of points to add!</string>
     <string name="Dialogue2">Please select the number of games to redeem!</string>
     <string name="WelcomeMessage">Welcome,</string>
-    <string name="HomeContent">Bowl, Earn and Redeem!</string>
+    <string name="HomeContent">BOWL AND REDEEM</string>
+    <string name="Specials">SPECIALS</string>
     <string name="ButtonContent">Home image button</string>
     <string name="SlideshowContent">Specials slideshow</string>
     <string name="QRcodeContent">QR Code</string>

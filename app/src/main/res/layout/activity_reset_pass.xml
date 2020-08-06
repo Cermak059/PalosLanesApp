@@ -36,7 +36,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="12dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/et_style"
         android:ems="10"
         android:hint="@string/EmailExample"
         android:inputType="textEmailAddress"
@@ -55,6 +55,8 @@
         android:layout_marginRight="12dp"
         android:layout_marginBottom="40dp"
         android:text="@string/BtnRequest"
+        android:textColor="#0000FF"
+        android:background="@drawable/button_style"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

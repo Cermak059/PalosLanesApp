@@ -21,6 +21,8 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
                 android:text="@string/Logout"
+                android:textColor="#0000FF"
+                android:background="@drawable/button_style"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
