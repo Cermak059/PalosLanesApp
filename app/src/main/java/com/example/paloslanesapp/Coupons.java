@@ -81,7 +81,7 @@ public class Coupons extends Fragment {
 
     private void checkCoupons(String authToken) throws IOException {
 
-        String url = "http://3.15.199.174:5000/CheckAllCoupons";
+        String url = "https://chicagolandbowlingservice.com/api/CheckAllCoupons";
 
         OkHttpClient client = new OkHttpClient();
 

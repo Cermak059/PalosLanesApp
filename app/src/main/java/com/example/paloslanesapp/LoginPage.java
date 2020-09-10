@@ -158,7 +158,7 @@ public class LoginPage extends AppCompatActivity {
         final String Password = mPassword.getText().toString();
 
         MediaType MEDIA_TYPE = MediaType.parse("application/json");
-        String url = "http://3.15.199.174:5000/Login";
+        String url = "https://chicagolandbowlingservice.com/api/Login";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -261,7 +261,7 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void verifyToken(final String authToken) throws IOException {
-        String url = "http://3.15.199.174:5000/Authenticate";
+        String url = "https://chicagolandbowlingservice.com/api/Authenticate";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -344,7 +344,7 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void getUserData(String authToken) throws IOException {
-        String url = "http://3.15.199.174:5000/Users";
+        String url = "https://chicagolandbowlingservice.com/api/Users";
 
         OkHttpClient client = new OkHttpClient();
 

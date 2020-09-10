@@ -126,7 +126,7 @@ public class Loyalty extends Fragment {
     }
 
     private void getUserData(String authToken) throws IOException {
-        String url = "http://3.15.199.174:5000/Users";
+        String url = "https://chicagolandbowlingservice.com/api/Users";
 
         OkHttpClient client = new OkHttpClient();
 

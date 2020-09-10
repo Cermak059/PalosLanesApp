@@ -63,7 +63,7 @@ public class ResetPass extends AppCompatActivity {
         final String Email = mEmail.getText().toString();
 
         MediaType MEDIA_TYPE = MediaType.parse("application/json");
-        String url = "http://3.15.199.174:5000/ResetRequest";
+        String url = "https://chicagolandbowlingservice.com/api/ResetRequest";
 
         OkHttpClient client = new OkHttpClient();
 

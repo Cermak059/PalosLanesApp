@@ -228,7 +228,7 @@ public class SignUpPage extends AppCompatActivity {
 
 
         MediaType MEDIA_TYPE = MediaType.parse("application/json");
-        String url = "http://3.15.199.174:5000/Register";
+        String url = "https://chicagolandbowlingservice.com/api/Register";
 
         OkHttpClient client = new OkHttpClient();
 
